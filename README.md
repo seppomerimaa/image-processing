@@ -1,2 +1,4 @@
 # image-processing
-Fiddling around with some image processing / pseudo-hashing with k-means
+Proof of concept fast image hashing using k-means. Emphasis on fast. Theoretically.
+
+Brought to you by goats.

@@ -5,10 +5,24 @@ object ComparisonApp {
   def main(args: Array[String]): Unit = {
     val params = new ComparisonParams(args)
     val hashes = params.imageParams.map { imageParam =>
+      val start = System.currentTimeMillis()
       val image = Image.create(imageParam.fullImagePath)
+
+      val read = System.currentTimeMillis()
+      println(s"${imageParam.imageName} | read image: ${(read - start) / 1000.0}")
+
       val preprocessedImage = Preprocessor.processImage(image)
+
+      val preprocess = System.currentTimeMillis()
+      println(s"${imageParam.imageName} | preprocess image: ${(preprocess - read) / 1000.0}")
+
       val hasher = new KmeansImageHasher(params.k)
-      hasher.hash(preprocessedImage)
+      val hash = hasher.hash(preprocessedImage)
+
+      val hashTime = System.currentTimeMillis()
+      println(s"${imageParam.imageName} | hash image: ${(hashTime - preprocess) / 1000.0}")
+
+      hash
     }
 
     hashes.zip(params.imageParams)foreach {
