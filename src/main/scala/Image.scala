@@ -16,6 +16,8 @@ case class Pixel(red: Int, green: Int, blue: Int, x: Int, y: Int) extends Cluste
 }
 
 trait Image {
+  val width: Int
+  val height: Int
   def pixels: Array[Pixel]
   def save(outputPath: String, imageType: String): Unit
   override def equals(a: Any): Boolean = {
@@ -35,8 +37,6 @@ object Image {
    */
   def create(inputPath: String): Image = {
     val buff = ImageIO.read(new File(inputPath))
-    //val raster = buff.getRaster
-//    match buff.getC
 
     val pixels = for (
       x <- buff.getMinX to buff.getWidth - 1;
@@ -61,7 +61,11 @@ object Image {
     new ConcreteImage(pixels, pixels.length, 1)
   }
 
-  private class ConcreteImage(pixelArr: Array[Pixel], width: Int, height: Int) extends Image {
+  def create(pixels: Array[Pixel], width: Int, height: Int): Image = {
+    new ConcreteImage(pixels, width, height)
+  }
+
+  private class ConcreteImage(pixelArr: Array[Pixel], val width: Int, val height: Int) extends Image {
     override def pixels = {
       pixelArr
     }
